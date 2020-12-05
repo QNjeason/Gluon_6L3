@@ -4,6 +4,24 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="gluon_6l3_description">
+
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="3.1415926536 3.1415926536 0.0" />
+  </joint>
+  <!-- ROS base_link to ROCR6 'Base' Coordinates transform -->
+    <link name="base"/>
+    <joint name="base_link-base_fixed_joint" type="fixed">
+      <!-- NOTE: this rotation is only needed as long as base_link itself is
+                 not corrected wrt the real robot (ie: rotated over 180
+                 degrees)
+      -->
+      <origin xyz="0 0 0" rpy="0 0 -3.1415926536"/>
+      <parent link="base_link"/>
+      <child link="base"/>
+    </joint>
   <link
     name="base_link">
     <inertial>
@@ -29,9 +47,11 @@
           filename="package://gluon_6l3_description/meshes/base_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Grey">
         <color
-          rgba="1 1 1 1" />
+          rgba="0.4 0.4 0.4 1.0"/>
+		<texture
+          filename="package://gluon_6l3_description/textures/0.png" />
       </material>
     </visual>
     <collision>
@@ -69,9 +89,11 @@
           filename="package://gluon_6l3_description/meshes/shoulder_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Orange">
         <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+		<texture
+          filename="package://gluon_6l3_description/textures/1.png" />
       </material>
     </visual>
     <collision>
@@ -127,9 +149,11 @@
           filename="package://gluon_6l3_description/meshes/upper_arm_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Orange">
         <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+		<texture
+          filename="package://gluon_6l3_description/textures/2.png" />
       </material>
     </visual>
     <collision>
@@ -185,9 +209,11 @@
           filename="package://gluon_6l3_description/meshes/forearm_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Orange">
         <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+		<texture
+          filename="package://gluon_6l3_description/textures/3.png" />
       </material>
     </visual>
     <collision>
@@ -243,9 +269,11 @@
           filename="package://gluon_6l3_description/meshes/wrist_1_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Orange">
         <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+		<texture
+          filename="package://gluon_6l3_description/textures/4.png" />
       </material>
     </visual>
     <collision>
@@ -301,9 +329,11 @@
           filename="package://gluon_6l3_description/meshes/wrist_2_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Orange">
         <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+		<texture
+          filename="package://gluon_6l3_description/textures/5.png" />
       </material>
     </visual>
     <collision>
@@ -359,9 +389,11 @@
           filename="package://gluon_6l3_description/meshes/wrist_3_link.STL" />
       </geometry>
       <material
-        name="">
+        name="Red">
         <color
-          rgba="1 1 1 1" />
+          rgba="0.8 0.0 0.0 1.0"/>
+		<texture
+          filename="package://gluon_6l3_description/textures/6.png" />
       </material>
     </visual>
     <collision>
@@ -391,5 +423,27 @@
       upper="3.14"
       effort="28"
       velocity="3.2" />
+  </joint>
+  <!--new add content -->
+  <joint name="ee_fixed_joint" type="fixed">
+    <parent link="wrist_3_link"/>
+    <child link="ee_link"/>
+    <origin rpy="0.0 0.0 1.57079632679" xyz="0.0 0.04436 0.0"/>
+  </joint>
+  <link name="ee_link">
+    <collision>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="-0.01 0 0"/>
+    </collision>
+  </link>
+	
+      <!-- Frame coincident with all-zeros TCP on ROCR6 controller -->
+  <link name="tool0"/>
+  <joint name="wrist_3_link-tool0_fixed_joint" type="fixed">
+    <origin rpy="-1.57079632679 0 0" xyz="0 0.04436 0"/>
+    <parent link="wrist_3_link"/>
+    <child link="tool0"/>
   </joint>
 </robot>
